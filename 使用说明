@@ -1,0 +1,56 @@
+# -
+利用python获取文心一言官网排队人数
+要获取百度文心一言官网登录后的排队人数，可以使用Selenium库模拟浏览器操作，然后使用BeautifulSoup库解析网页内容。以下是示例代码：
+from selenium import webdriver
+from bs4 import BeautifulSoup
+
+# 设置Chrome浏览器的驱动路径
+driver_path = 'chromedriver.exe'
+# 创建Chrome浏览器对象
+driver = webdriver.Chrome(executable_path=driver_path)
+
+# 打开百度文心一言官网
+driver.get('https://yiyan.baidu.com/welcome')
+
+# 等待页面加载完成
+driver.implicitly_wait(10)
+
+# 点击登录按钮
+login_button = driver.find_element_by_xpath('//a[@class="login-btn"]')
+login_button.click()
+
+# 输入百度账号和密码
+username_input = driver.find_element_by_xpath('//input[@name="userName"]')
+username_input.send_keys('your_username')
+password_input = driver.find_element_by_xpath('//input[@name="password"]')
+password_input.send_keys('your_password')
+
+# 点击登录按钮
+submit_button = driver.find_element_by_xpath('//input[@type="submit"]')
+submit_button.click()
+
+# 等待页面加载完成
+driver.implicitly_wait(10)
+
+# 获取排队人数
+soup = BeautifulSoup(driver.page_source, 'html.parser')
+queue_num = soup.find('div', {'class': 'queue-num'}).text.strip()
+
+# 打印排队人数
+print('当前排队人数：', queue_num)
+
+# 关闭浏览器
+driver.quit()
+解释一下代码：
+1. 首先导入Selenium库和BeautifulSoup库。
+2. 设置Chrome浏览器的驱动路径，并创建Chrome浏览器对象。
+3. 打开百度文心一言官网。
+4. 等待页面加载完成。
+5. 点击登录按钮。
+6. 输入百度账号和密码。
+7. 点击登录按钮。
+8. 等待页面加载完成。
+9. 使用BeautifulSoup库解析网页内容，并获取排队人数。
+10. 打印排队人数。
+11. 关闭浏览器。
+注意：在代码中需要将your_username和your_password替换为自己的百度账号和密码。另外，需要下载对应版本的Chrome浏览器驱动，并将驱动路径设置为正确的路径。
